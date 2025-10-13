@@ -1,4 +1,5 @@
 import { ProviderLogos } from "@/components/ui/provider-logo";
+import { RobotIcon } from "@phosphor-icons/react";
 
 type Props = {
   provider: string;
@@ -14,9 +15,7 @@ export const ModelLogo = (props: Props) => {
         return Logo ? (
           Logo(16)
         ) : (
-          <>
-            <span className="text-lg font-bold">NotesBuddy</span>
-          </>
+          <RobotIcon className="h-5 w-5 sm:h-6 sm:w-6" weight="duotone" />
         );
       })()}
     </div>

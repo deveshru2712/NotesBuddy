@@ -11,7 +11,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Settings2Icon } from "lucide-react";
-import AvailableModelsList from "./available-models-list";
+import AvailableModelsList from "./available-model-list";
+import { SelectedModel, SelectedModelProvider } from "./selected-model";
 
 export default function ModelSelector() {
   return (
@@ -33,6 +34,10 @@ export default function ModelSelector() {
             You can choose multi model at the same time.
           </DialogDescription>
         </DialogHeader>
+        <SelectedModelProvider>
+          <SelectedModel />
+        </SelectedModelProvider>
+
         {/* <SelectedModel /> */}
         <hr />
         <AvailableModelsList />
