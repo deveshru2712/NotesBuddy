@@ -20,68 +20,26 @@ import { CSS } from "@dnd-kit/utilities";
 import { GripHorizontal } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { createContext, useContext, useState } from "react";
 import type { Model } from "@/types/model";
 import { ModelLogo } from "./model-logo";
 import { ActionButton } from "./action-button";
+import React from "react";
+import { useSelectedModels } from "./model-selector";
 
-const updateConversationStatus = async (
+// todo: check this out complete this funct
+export const updateConversationStatus = async (
   _id: string,
   _model: Model,
   _status: boolean,
 ) => {
-  // Do nothing for now
+  // placeholder for future server call
 };
 
-type SelectedModelContextType = {
-  selectedModels: Model[];
-  addModel: (model: Model) => void;
-  removeModel: (model: Model) => void;
-  reorderModels: (from: number, to: number) => void;
-};
+interface SortableModelItemProps {
+  model: Model;
+}
 
-const SelectedModelContext = createContext<SelectedModelContextType | null>(
-  null,
-);
-
-export const useSelectedModels = () => {
-  const ctx = useContext(SelectedModelContext);
-  if (!ctx) throw new Error("useSelectedModels must be used within Provider");
-  return ctx;
-};
-
-export const SelectedModelProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-  const [selectedModels, setSelectedModels] = useState<Model[]>([]);
-
-  const addModel = (model: Model) =>
-    setSelectedModels((prev) => [...prev, model]);
-
-  const removeModel = (model: Model) =>
-    setSelectedModels((prev) => prev.filter((m) => m.id !== model.id));
-
-  const reorderModels = (from: number, to: number) => {
-    setSelectedModels((prev) => {
-      const arr = [...prev];
-      const [item] = arr.splice(from, 1);
-      arr.splice(to, 0, item);
-      return arr;
-    });
-  };
-
-  return (
-    <SelectedModelContext.Provider
-      value={{ selectedModels, addModel, removeModel, reorderModels }}
-    >
-      {children}
-    </SelectedModelContext.Provider>
-  );
-};
-
-const SortableModelItem = ({ model }: { model: Model }) => {
+const SortableModelItem = ({ model }: SortableModelItemProps) => {
   const { id } = useParams();
   const router = useRouter();
   const { addModel, removeModel } = useSelectedModels();
@@ -143,8 +101,7 @@ const SortableModelItem = ({ model }: { model: Model }) => {
 };
 
 export const SelectedModel = () => {
-  const { selectedModels, reorderModels } = useSelectedModels();
-
+  const { selectedModelList, reorderModels } = useSelectedModels();
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -155,8 +112,8 @@ export const SelectedModel = () => {
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (over && active.id !== over.id) {
-      const oldIndex = selectedModels.findIndex((m) => m.id === active.id);
-      const newIndex = selectedModels.findIndex((m) => m.id === over.id);
+      const oldIndex = selectedModelList.findIndex((m) => m.id === active.id);
+      const newIndex = selectedModelList.findIndex((m) => m.id === over.id);
       reorderModels(oldIndex, newIndex);
     }
   };
@@ -164,7 +121,7 @@ export const SelectedModel = () => {
   return (
     <div className="flex flex-col gap-2">
       <h2 className="text-lg font-semibold">
-        Selected Models ({selectedModels.length})
+        Selected Models ({selectedModelList.length})
       </h2>
       <DndContext
         sensors={sensors}
@@ -172,11 +129,11 @@ export const SelectedModel = () => {
         onDragEnd={handleDragEnd}
       >
         <SortableContext
-          items={selectedModels.map((model) => model.id)}
+          items={selectedModelList.map((model) => model.id)}
           strategy={horizontalListSortingStrategy}
         >
           <div className="flex gap-2 overflow-x-auto pb-4">
-            {selectedModels.map((model) => (
+            {selectedModelList.map((model) => (
               <SortableModelItem key={model.id} model={model} />
             ))}
           </div>

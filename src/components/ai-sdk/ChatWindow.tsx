@@ -1,7 +1,7 @@
 "use client";
 
 import { RobotIcon } from "@phosphor-icons/react";
-import ModelSelector from "./modal-selection/modal-selector";
+import ModelSelector from "./modal-selection/model-selector";
 
 export default function ChatWindow() {
   return (

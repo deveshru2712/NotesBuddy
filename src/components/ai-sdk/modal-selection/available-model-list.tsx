@@ -37,10 +37,6 @@ export default function AvailableModelsList() {
         setError(fetchError);
         toast.error(fetchError);
       } else {
-        console.log(
-          "Here is the list of all available models for Vercel:",
-          fetchedModels,
-        );
         setModels(fetchedModels);
       }
 
@@ -49,26 +45,6 @@ export default function AvailableModelsList() {
 
     loadModels();
   }, []);
-
-  // if (isLoading)
-  //   return (
-  //     <div className="flex h-full items-center justify-center">
-  //       <ModelListSkeleton />
-  //     </div>
-  //   );
-
-  // if (error)
-  //   return (
-  //     <div className="flex h-full items-center justify-center">
-  //       <span className="text-lg font-semibold">Error: {error}</span>
-  //     </div>
-  //   );
-
-  // return (
-  //   <div className="flex-1 overflow-y-scroll">
-  //     <ModelsTab sortedProviders={sortedProviders} />
-  //   </div>
-  // );
 
   const renderContent = () => {
     if (isLoading) {
