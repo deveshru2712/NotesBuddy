@@ -82,7 +82,10 @@ export default function ModelSelector() {
             Pick a model
           </Button>
         </DialogTrigger>
-        <DialogContent className="flex h-[90vh] flex-col sm:max-w-5xl">
+        <DialogContent
+          className="flex h-[90vh] flex-col sm:max-w-5xl"
+          data-lenis-prevent
+        >
           <DialogHeader>
             <DialogTitle>Pick Any Model To Start The Chat.</DialogTitle>
             <DialogDescription>

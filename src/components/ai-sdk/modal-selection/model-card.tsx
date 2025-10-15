@@ -21,8 +21,8 @@ type Props = {
 };
 
 export const ModelCard = ({ model }: Props) => {
-  const [vercelApiKey, setVercelApiKey] = useState<string | null>(null);
-  const [openRouterApiKey, setOpenRouterApiKey] = useState<string | null>(null);
+  const [vercelApiKey, setVercelApiKey] = useState<string>("");
+  const [openRouterApiKey, setOpenRouterApiKey] = useState<string>("");
   const [isTextTruncated, setIsTextTruncated] = useState(false);
   const { id } = useParams();
   const router = useRouter();
@@ -44,9 +44,9 @@ export const ModelCard = ({ model }: Props) => {
   }, []);
 
   useEffect(() => {
-    if (typeof window !== undefined) {
-      setVercelApiKey(localStorage.getItem("vercelApiKey"));
-      setOpenRouterApiKey(localStorage.getItem("openRouterApiKey"));
+    if (typeof window !== "undefined") {
+      setVercelApiKey(localStorage.getItem("vercelApiKey") || "");
+      setOpenRouterApiKey(localStorage.getItem("openRouterApiKey") || "");
     }
   }, []);
 
